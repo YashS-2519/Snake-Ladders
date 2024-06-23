@@ -3,8 +3,9 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'gilroy',sans-serif;
+    user-select: none;
 }
- 
+
 html , body{
     height: 100%;
     width: 100%;
@@ -16,6 +17,59 @@ html , body{
     background-color: #212121;
     color: #fff;
     padding: 2%;
+    position: relative;
+}
+
+.info{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.789);
+    z-index: 9;
+    justify-content: center;
+    align-items: center;
+    transition: all ease 0.5s;
+    display: none;
+}
+
+.modal{
+    height: 60%;
+    width: 50%;
+    border-radius: 20px;
+    background-color: #212121;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all ease 0.5s;
+    scale: 0;
+    gap: 20px;
+}
+
+h3{
+    font-size: 35px;
+}
+
+.reset{
+    background-color: #414141;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 1px solid #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all ease 0.3s;
+}
+
+.reset:hover{
+    background-color: #333;
+}
+
+.reset:active{
+    scale: 0.9;
 }
 
 h1{
@@ -27,6 +81,50 @@ h1{
     height: 80vh;
     width: 100%;
     margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+h2{
+    color: #ff6969;
+}
+
+.dice{
+    height: 100%;
+    width: calc(70% - 80vh);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.display{
+    background-color: black;
+    padding: 30px 30px;
+    border-radius: 5px;
+    font-size: larger;
+    font-weight: 900;
+}
+
+.rollDice{
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all ease 0.3s;
+}
+
+.rollDice:hover{
+    border: 1px solid #fff;
+    background-color: #212121;
+    color: #fff;
+}
+
+.rollDice:active{
+    transform: scale(0.9);
 }
 
 .board{
@@ -38,6 +136,7 @@ h1{
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    position: relative;
 }
 
 .row{
@@ -60,4 +159,72 @@ h1{
     font-size: 1.5rem;
     color: rgba(255, 255, 255, 0.650);
     cursor: pointer;
+}
+
+.player{
+    position: absolute;
+    font-size: 3rem;
+    top: 99.5%;
+    left: 0%;
+    transform: translate(-100%, -100%);
+    transition: all ease 0.3s;
+}
+
+#player1{
+    color: #ff6969;
+}
+
+#player2{
+    color: #33CC33;
+    top: 100.5%;
+}
+
+@media screen and (max-width: 950px) {
+    /* .info{
+        display: flex;
+    }
+    .modal{
+        scale: 1;
+    }
+    h3{
+        text-align: center;
+        font-size: 200%;
+    }
+    .reset{
+        display: none;
+    } */
+
+    h1{
+        font-size: 10vw;
+    }
+    
+    .gamezone{
+        flex-direction: column;
+    }
+
+    .dice{
+        display: none;
+    }
+
+    .dice:nth-last-child(1){
+        width: 100%;
+        display: flex;
+    }
+
+    h2{
+        text-align: center;
+    }
+
+    .board{
+        height: 80vw;
+        width: 80vw;
+    }
+
+    .player{
+        font-size: 2rem;
+    }
+
+    .square{
+        font-size: medium;
+    }
 }
