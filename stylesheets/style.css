@@ -180,19 +180,6 @@ h2{
 }
 
 @media screen and (max-width: 950px) {
-    /* .info{
-        display: flex;
-    }
-    .modal{
-        scale: 1;
-    }
-    h3{
-        text-align: center;
-        font-size: 200%;
-    }
-    .reset{
-        display: none;
-    } */
 
     .container{
         padding: 50px 0px;
@@ -200,6 +187,14 @@ h2{
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
+    }
+
+    .modal{
+        width: 80%;
+    }
+
+    h3{
+        text-align: center;
     }
 
     h1{
