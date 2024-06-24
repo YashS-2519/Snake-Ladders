@@ -1,4 +1,4 @@
-alert("Currenly in Development");
+// alert("Currenly in Development");
 
 const board = document.querySelector('.board');
 const player1 = document.querySelector('#player1');
@@ -27,42 +27,79 @@ const positionMap = [
     ['10%', '50%'], ['10%', '40%'], ['10%', '30%'], ['10%', '20%'], ['10%', '10%']
 ]
 
+const snakes = {
+    '17' : '7',
+    '54' : '34',
+    '62' : '19',
+    '64' : '60',
+    '87' : '24',
+    '93' : '73',
+    '95' : '78',
+    '99' : '78',
+}
 
-    // generate blocks of board
-    ; (() => {
-        let c = 111;
+const ladders = {
+    '4' : '14',
+    '9' : '31',
+    '20' : '38',
+    '28' : '84',
+    '40' : '59',
+    '51' : '67',
+    '63' : '81',
+    '71' : '91',
+}
 
-        for (let i = 0; i < 10; i++) {
-            const row = document.createElement('div');
-            row.className = 'row';
-            row.id = `row${i + 1}`;
-            board.append(row);
+// generate blocks of board
+; (() => {
+    let c = 111;
 
-            if (i % 2 == 0) {
-                c = c - 11;
-                for (let j = 0; j < 10; j++) {
-                    const square = document.createElement('div');
-                    square.className = `square`;
-                    square.id = `${c}`;
-                    square.innerHTML = c;
-                    row.appendChild(square);
-                    c--;
+    for (let i = 0; i < 10; i++) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.id = `row${i + 1}`;
+        board.append(row);
+
+        if (i % 2 == 0) {
+            c = c - 11;
+            for (let j = 0; j < 10; j++) {
+                const square = document.createElement('div');
+                square.className = `square`;
+                square.id = `${c}`;
+                square.innerHTML = c;
+                row.appendChild(square);
+                c--;
+
+                if (!isNaN(parseInt(snakes[c + 1]))) {
+                    square.style.backgroundColor = '#7f1515'
                 }
-            }
-            else {
-                c = c - 9;
-                for (let j = 9; j >= 0; j--) {
-                    const square = document.createElement('div');
-                    square.className = `square`;
-                    square.id = `${c}`;
-                    square.innerHTML = c;
-                    row.appendChild(square);
-                    c++;
+                else if ((!isNaN(parseInt(ladders[c + 1])))) {
+                    square.style.backgroundColor = '#157f31'
                 }
+                // j % 2 == 0 ? square.style.backgroundColor = '#313131' : square.style.backgroundColor = '#212121';
             }
         }
+        else {
+            c = c - 9;
+            for (let j = 9; j >= 0; j--) {
+                const square = document.createElement('div');
+                square.className = `square`;
+                square.id = `${c}`;
+                square.innerHTML = c;
+                row.appendChild(square);
+                c++;
 
-    })();
+                if (!isNaN(parseInt(snakes[c - 1]))) {
+                    square.style.backgroundColor = '#7f1515'
+                }
+                else if ((!isNaN(parseInt(ladders[c - 1])))) {
+                    square.style.backgroundColor = '#157f31'
+                }
+                // j % 2 == 0 ? square.style.backgroundColor = '#313131' : square.style.backgroundColor = '#212121';
+            }
+        }
+    }
+
+})();
 
 // roll a dice
 function rollDice() {
@@ -73,6 +110,18 @@ function rollDice() {
 let currentPlayer = 1;
 let player1Position = 0;
 let player2Position = 0;
+
+function isSnake(playerPosition) {
+    if ( !isNaN(parseInt(snakes[playerPosition])) ) {
+        return parseInt(snakes[playerPosition]);
+    }
+}
+
+function isLadder(playerPosition) {
+    if ( !isNaN(parseInt(ladders[playerPosition])) ) {
+        return parseInt(ladders[playerPosition]);
+    }
+}
 
 document.querySelectorAll('.rollDice').forEach((elem) => {
     elem.addEventListener('click', () => {
@@ -87,6 +136,60 @@ document.querySelectorAll('.rollDice').forEach((elem) => {
             let pos = positionMap[player1Position - 1];
             player1.style.top = pos[0];
             player1.style.left = pos[1];
+
+            if (!isNaN(isSnake(player1Position))){
+                document.querySelectorAll('.display').forEach((elem) => {
+                    elem.style.scale = '0';
+                })
+                document.querySelectorAll('.rollDice').forEach((elem) => {
+                    elem.style.scale = '0';
+                })
+                document.querySelectorAll('h2').forEach((elem) => {
+                    elem.innerHTML = `SNAKE`;
+                    elem.style.color = '#ff6969';
+                })
+                setTimeout(() => {
+                    player1Position = isSnake(player1Position);
+                    let pos = positionMap[player1Position - 1];
+                    player1.style.top = pos[0];
+                    player1.style.left = pos[1];
+                }, 500);
+                setTimeout(() => {
+                    document.querySelectorAll('.display').forEach((elem) => {
+                        elem.style.scale = '1';
+                    })
+                    document.querySelectorAll('.rollDice').forEach((elem) => {
+                        elem.style.scale = '1';
+                    })
+                }, 1000);
+            }
+            else if (!isNaN(isLadder(player1Position))){
+                document.querySelectorAll('.display').forEach((elem) => {
+                    elem.style.scale = '0';
+                })
+                document.querySelectorAll('.rollDice').forEach((elem) => {
+                    elem.style.scale = '0';
+                })
+                document.querySelectorAll('h2').forEach((elem) => {
+                    elem.innerHTML = `Ladder`;
+                    elem.style.color = '#33CC33';
+                })
+                setTimeout(() => {
+                    player1Position = isLadder(player1Position);
+                    let pos = positionMap[player1Position - 1];
+                    player1.style.top = pos[0];
+                    player1.style.left = pos[1];
+                }, 500);
+                setTimeout(() => {
+                    document.querySelectorAll('.display').forEach((elem) => {
+                        elem.style.scale = '1';
+                    })
+                    document.querySelectorAll('.rollDice').forEach((elem) => {
+                        elem.style.scale = '1';
+                    })
+                }, 1000);
+            }
+
             dice == 6 ? currentPlayer = 1 : currentPlayer = 2;
         }
         else {
@@ -94,14 +197,70 @@ document.querySelectorAll('.rollDice').forEach((elem) => {
             let pos = positionMap[player2Position - 1];
             player2.style.top = pos[0];
             player2.style.left = pos[1];
+
+            if (!isNaN(isSnake(player2Position))){
+                document.querySelectorAll('.display').forEach((elem) => {
+                    elem.style.scale = '0';
+                })
+                document.querySelectorAll('.rollDice').forEach((elem) => {
+                    elem.style.scale = '0';
+                })
+                document.querySelectorAll('h2').forEach((elem) => {
+                    elem.innerHTML = `SNAKE`;
+                    elem.style.color = '#ff6969';
+                })
+                setTimeout(() => {
+                    player2Position = isSnake(player2Position);
+                    let pos = positionMap[player2Position - 1];
+                    player2.style.top = pos[0];
+                    player2.style.left = pos[1];
+                }, 500);
+                setTimeout(() => {
+                    document.querySelectorAll('.display').forEach((elem) => {
+                        elem.style.scale = '1';
+                    })
+                    document.querySelectorAll('.rollDice').forEach((elem) => {
+                        elem.style.scale = '1';
+                    })
+                }, 1000);
+            }
+            else if (!isNaN(isLadder(player2Position))){
+                document.querySelectorAll('.display').forEach((elem) => {
+                    elem.style.scale = '0';
+                })
+                document.querySelectorAll('.rollDice').forEach((elem) => {
+                    elem.style.scale = '0';
+                })
+                document.querySelectorAll('h2').forEach((elem) => {
+                    elem.innerHTML = `Ladder`;
+                    elem.style.color = '#33CC33';
+                })
+                setTimeout(() => {
+                    player2Position = isLadder(player2Position);
+                    let pos = positionMap[player2Position - 1];
+                    player2.style.top = pos[0];
+                    player2.style.left = pos[1];
+                }, 500);
+                setTimeout(() => {
+                    document.querySelectorAll('.display').forEach((elem) => {
+                        elem.style.scale = '1';
+                    })
+                    document.querySelectorAll('.rollDice').forEach((elem) => {
+                        elem.style.scale = '1';
+                    })
+                }, 1000);
+            }
+            
             dice == 6 ? currentPlayer = 2 : currentPlayer = 1;
         }
 
-        document.querySelectorAll('h2').forEach((elem) => {
-            let color = currentPlayer == 1 ? '#ff6969' : '#33CC33';
-            elem.innerHTML = `Player ${currentPlayer}'s turn`;
-            elem.style.color = color;
-        });
+        setTimeout(() => {
+            document.querySelectorAll('h2').forEach((elem) => {
+                let color = currentPlayer == 1 ? '#ff6969' : '#33CC33';
+                elem.innerHTML = `Player ${currentPlayer}'s turn`;
+                elem.style.color = color;
+            });
+        }, 500);
 
         if (player1Position == 100 || player2Position == 100) {
             setTimeout(() => {
@@ -110,11 +269,10 @@ document.querySelectorAll('.rollDice').forEach((elem) => {
                 document.querySelector('.modal h3').innerHTML = `Player ${currentPlayer == 1 ? '2' : '1'} win!`
                 console.log('Win!');
             }, 500);
-        }
+        };
 
-        // console.log(`Player ${currentPlayer == 1 ? '2' : '1'} position ${player1Position} rolled a ${dice} `);
-    })
-})
+    });
+});
 
 // game reset
 document.querySelector('.reset').addEventListener('click', () => {
